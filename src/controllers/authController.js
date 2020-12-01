@@ -1,7 +1,14 @@
-const signIn = async (req, res) => {
+const { validationResult } = require('express-validator');
+const { validationError } = require('../errors');
+
+const signIn = (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    throw validationError(errors.array());
+  }
+
   const { email, password } = req.body;
-  console.log(email, password);
-  res.send('checked');
+  res.send({ email, password });
 };
 
 module.exports = {
