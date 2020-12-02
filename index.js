@@ -18,6 +18,6 @@ app.use((req, res) => {
 
 app.use(errorMiddleware);
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server is running on port ${process.env.PORT}`);
+app.listen(process.env.AUTH_SERVICE_PORT, () => {
+  console.log(`Server is running on port ${process.env.AUTH_SERVICE_PORT}`);
 });

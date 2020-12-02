@@ -1,0 +1,7 @@
+version: '3'
+services:
+  auth-service:
+    build: .
+    ports:
+      - '${AUTH_SERVICE_PORT}:${AUTH_SERVICE_PORT}'
+    command: npm run start
