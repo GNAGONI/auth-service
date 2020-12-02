@@ -5,3 +5,26 @@ services:
     ports:
       - '${AUTH_SERVICE_PORT}:${AUTH_SERVICE_PORT}'
     command: npm run start
+  auth-database:
+    image: 'postgres'
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - auth-database-data:/var/lib/postgresql/data/
+    ports:
+      - '${POSTGRES_PORT}:${POSTGRES_PORT}'
+  auth-pgadmin:
+    image: dpage/pgadmin4:4.18
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+      PGADMIN_LISTEN_PORT: ${PGADMIN_LISTEN_PORT}
+    ports:
+      - '${PGADMIN_LISTEN_PORT}:${PGADMIN_LISTEN_PORT}'
+    volumes:
+      - auth-pgadmin-data:/var/lib/pgadmin
+volumes:
+  auth-database-data:
+  auth-pgadmin-data:
