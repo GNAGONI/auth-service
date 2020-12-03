@@ -20,13 +20,13 @@ BEGIN
 	CREATE TABLE users (
     id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
 	  email text,
-	  passwordHash text
+	  password_hash text
 	);
 	
-	INSERT INTO users(id, email, passwordHash)
+	INSERT INTO users(id, email, password_hash)
 		SELECT
 			uuid_generate_v4(),
-      substr(md5(random()::text), 0, 6) || s || '@testmail.com',
+      'user' || s || '@testmail.com',
 			default_password_hash
 		FROM generate_series(1, users_number) AS s(id);	
 END;
