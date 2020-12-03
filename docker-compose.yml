@@ -5,6 +5,8 @@ services:
     ports:
       - '${AUTH_SERVICE_PORT}:${AUTH_SERVICE_PORT}'
     command: npm run start
+    volumes:
+      - ./:/app
   auth-database:
     image: 'postgres'
     environment:
