@@ -21,8 +21,12 @@ const signIn = async (req, res) => {
   if (!passwordUtil.compareHash(password, user.password_hash)) {
     throw dbQueryError('Invalid credentials');
   }
-
-  res.send({ user });
+  const token = jwt.sign(
+    { email: user.email, id: user.id },
+    process.env.JWT_SECRET,
+    { expiresIn: process.env.JWT_EXPIRATION },
+  );
+  res.send({ token: `Bearer ${token}` });
 };
 
 module.exports = {
