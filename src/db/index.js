@@ -13,23 +13,18 @@ const client = new Client({
   port: process.env.POSTGRES_PORT,
 });
 
-const initSQLFunctions = async () => {
-  const functionsSQL = fs.readFileSync(
-    path.resolve(__dirname, './functions.sql'),
-    'utf8',
-  );
-  await client.query(functionsSQL);
-};
-
 const dbConnect = cb => {
   (async () => {
     try {
       await client.connect();
-      await initSQLFunctions();
+      client.on('error', e => {
+        console.error(e);
+        process.exit(2);
+      });
       cb();
     } catch (e) {
       console.error(e);
-      process.exit();
+      process.exit(2);
     }
   })();
 };

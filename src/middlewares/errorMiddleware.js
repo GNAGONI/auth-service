@@ -7,6 +7,7 @@ const errorMiddleware = (err, req, res, next) => {
     case errorTypes.dbQueryError:
       return res.status(400).send({ message: err.cause });
     default:
+      console.error(err);
       return res.status(400).send({ message: 'Oops, something went wrong' });
   }
 };
