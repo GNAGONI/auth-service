@@ -1,11 +1,11 @@
 const dotenv = require('dotenv');
 const fs = require('fs');
 const path = require('path');
-const { Client } = require('pg');
+const { Pool } = require('pg');
 
 dotenv.config();
 
-const client = new Client({
+const client = new Pool({
   user: process.env.POSTGRES_USER,
   host: process.env.POSTGRES_HOST,
   database: process.env.POSTGRES_DB,
