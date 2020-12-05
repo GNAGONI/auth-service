@@ -4,8 +4,8 @@ const { authController } = require('../controllers');
 
 const authRouter = express.Router();
 
-authRouter.get(
-  '/signIn',
+authRouter.post(
+  '/login',
   [
     body('email')
       .isEmail()
@@ -15,7 +15,9 @@ authRouter.get(
       .isLength({ min: 4, max: 10 })
       .withMessage('Password must be between 4 and 10 symbols'),
   ],
-  authController.signIn,
+  authController.login,
 );
+
+authRouter.post('/logout', authController.logout);
 
 module.exports = authRouter;

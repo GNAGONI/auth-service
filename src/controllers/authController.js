@@ -4,7 +4,7 @@ const { validationError, dbQueryError } = require('../errors');
 const { passwordUtil } = require('../utils');
 const { client } = require('../db');
 
-const signIn = async (req, res) => {
+const login = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     throw validationError(errors.array());
@@ -26,9 +26,21 @@ const signIn = async (req, res) => {
     process.env.JWT_SECRET,
     { expiresIn: process.env.JWT_EXPIRATION },
   );
-  res.send({ token: `Bearer ${token}` });
+  req.session = {
+    token,
+  };
+  res.send({
+    email: user.email,
+    id: user.id,
+  });
+};
+
+const logout = (req, res) => {
+  req.session = null;
+  res.sendStatus(200);
 };
 
 module.exports = {
-  signIn,
+  login,
+  logout,
 };
