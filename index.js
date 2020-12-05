@@ -2,16 +2,22 @@ require('express-async-errors');
 const express = require('express');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
-const { authRouter } = require('./src/routes');
+const cookieSession = require('cookie-session');
+const { authRouter, userRouter } = require('./src/routes');
 const { errorMiddleware } = require('./src/middlewares');
 const { dbConnect } = require('./src/db');
 
 const app = express();
 dotenv.config();
-
+app.use(
+  cookieSession({
+    signed: false,
+  }),
+);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use('/', authRouter);
+app.use('/user', userRouter);
 app.use((req, res) => {
   res.status(404).send('Not Found');
 });
