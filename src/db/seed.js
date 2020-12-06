@@ -5,7 +5,10 @@ const { passwordUtil } = require('../utils');
 
 const seed = async () => {
   try {
-    const numberOfUsers = 1000;
+    const usersId = fs.readFileSync(
+      path.resolve(__dirname, './idData.sql'),
+      'utf8',
+    );
     const defaultUserPassword = '1234';
     const hash = await passwordUtil.convertToHash(defaultUserPassword);
     const seedSQL = fs.readFileSync(
@@ -19,12 +22,12 @@ const seed = async () => {
 
     await client.connect();
     await client.query(seedSQL);
-    await client.query(`SELECT fill_data(${numberOfUsers}, '${hash}');`);
+    await client.query(`SELECT fill_data(${usersId}, '${hash}');`);
     await client.query(functionsSQL);
-    await client.end();
+    process.exit();
   } catch (err) {
     console.error(err);
-    process.exit();
+    process.exit(2);
   }
 };
 

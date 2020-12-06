@@ -13,8 +13,10 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION fill_data(users_number integer, default_password_hash text)
+CREATE OR REPLACE FUNCTION fill_data(users_id text[], default_password_hash text)
 	RETURNS void AS $$
+DECLARE
+	user_id text;
 BEGIN
 
 	CREATE TABLE users (
@@ -22,13 +24,16 @@ BEGIN
 	  email text,
 	  password_hash text
 	);
-	
-	INSERT INTO users(id, email, password_hash)
-		SELECT
-			uuid_generate_v4(),
-      'user' || s || '@testmail.com',
-			default_password_hash
-		FROM generate_series(1, users_number) AS s(id);	
+
+	FOREACH user_id IN ARRAY users_id
+		LOOP
+			INSERT INTO users(id, email, password_hash)
+			SELECT
+				user_id::uuid,
+				'user' || s || '@testmail.com',
+			  default_password_hash
+			FROM generate_series(1, 1) AS s(id);
+		END LOOP;
 END;
 $$ LANGUAGE plpgsql;
 
