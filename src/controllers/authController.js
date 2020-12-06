@@ -26,17 +26,14 @@ const login = async (req, res) => {
     process.env.JWT_SECRET,
     { expiresIn: process.env.JWT_EXPIRATION },
   );
-  req.session = {
-    token,
-  };
   res.send({
     email: user.email,
     id: user.id,
+    token,
   });
 };
 
 const logout = (req, res) => {
-  req.session = null;
   res.sendStatus(200);
 };
 

@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const authCheckMiddleware = (req, res, next) => {
   try {
-    const { token } = req.session;
+    const token = req.headers.authorization;
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = {
       email: decoded.email,
