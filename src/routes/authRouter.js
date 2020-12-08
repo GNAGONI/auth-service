@@ -1,6 +1,7 @@
 const express = require('express');
 const { body } = require('express-validator');
 const { authController } = require('../controllers');
+const { validationMiddleware } = require('../middlewares');
 
 const authRouter = express.Router();
 
@@ -15,6 +16,7 @@ authRouter.post(
       .isLength({ min: 4, max: 10 })
       .withMessage('Password must be between 4 and 10 symbols'),
   ],
+  validationMiddleware,
   authController.login,
 );
 

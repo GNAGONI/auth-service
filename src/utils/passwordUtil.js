@@ -1,6 +1,6 @@
 const { randomBytes, createHmac } = require('crypto');
 
-const convertToHash = async password => {
+const convertToHash = password => {
   const salt = randomBytes(16).toString('hex');
   const hash = createHmac('sha512', salt)
     .update(password)
@@ -8,7 +8,7 @@ const convertToHash = async password => {
   return `${hash}.${salt}`;
 };
 
-const compareHash = async (password, hashedPassword) => {
+const compareHash = (password, hashedPassword) => {
   const [hash, salt] = hashedPassword.split('.');
   const data = createHmac('sha512', salt)
     .update(password)

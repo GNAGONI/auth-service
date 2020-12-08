@@ -10,7 +10,7 @@ const seed = async () => {
       'utf8',
     );
     const defaultUserPassword = '1234';
-    const hash = await passwordUtil.convertToHash(defaultUserPassword);
+    const hash = passwordUtil.convertToHash(defaultUserPassword);
     const seedSQL = fs.readFileSync(
       path.resolve(__dirname, './seed.sql'),
       'utf8',
