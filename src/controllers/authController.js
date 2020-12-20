@@ -10,12 +10,15 @@ const auth = async (req, res) => {
     `SELECT * FROM get_credentials_by_user_type('${userType}');`,
   );
   const userTypeData = result.rows[0];
-
   if (!passwordUtil.compareHash(credentials, userTypeData.password_hash)) {
     throw dbQueryError('Invalid credentials');
   }
   const token = jwt.sign(
-    { name: userTypeData.name, scope: userTypeData.scope },
+    {
+      userEmail: req.session.userEmail,
+      userId: req.session.userId,
+      scope: userTypeData.scope,
+    },
     process.env.JWT_SECRET,
     { expiresIn: process.env.JWT_EXPIRATION },
   );
