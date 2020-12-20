@@ -1,39 +1,22 @@
-DROP TABLE IF EXISTS projects CASCADE;
-DROP TABLE IF EXISTS positions CASCADE;
-DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS user_types CASCADE;
 DROP FUNCTION IF EXISTS fill_data;
-DROP FUNCTION IF EXISTS random_between;
 
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
-CREATE OR REPLACE FUNCTION random_between(low INT ,high INT) 
-   RETURNS INT AS $$
-BEGIN
-   RETURN floor(random()* (high-low + 1) + low);
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE OR REPLACE FUNCTION fill_data(users_id text[], default_password_hash text)
+CREATE OR REPLACE FUNCTION fill_data(default_password_hash text)
 	RETURNS void AS $$
-DECLARE
-	user_id text;
 BEGIN
 
-	CREATE TABLE users (
-    id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-	  email text,
-	  password_hash text
-	);
+		CREATE TABLE user_types (
+    	id SERIAL,
+	   	name text,
+			password_hash text,
+	   	scope text[]
+		);
 
-	FOREACH user_id IN ARRAY users_id
-		LOOP
-			INSERT INTO users(id, email, password_hash)
-			SELECT
-				user_id::uuid,
-				'user' || s || '@testmail.com',
-			  default_password_hash
-			FROM generate_series(1, 1) AS s(id);
-		END LOOP;
+		INSERT INTO user_types(name, password_hash, scope)
+		VALUES
+			('commonUser', default_password_hash, array['profile:me:read']),
+			('admin', default_password_hash, array['profile:me:read', 'profile:delete']);
+	
 END;
 $$ LANGUAGE plpgsql;
 
