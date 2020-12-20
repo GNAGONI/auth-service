@@ -9,13 +9,14 @@ BEGIN
     	id SERIAL,
 	   	name text,
 			password_hash text,
-	   	scope text[]
+	   	scope text[],
+			ttl text
 		);
 
-		INSERT INTO user_types(name, password_hash, scope)
+		INSERT INTO user_types(name, password_hash, scope, ttl)
 		VALUES
-			('commonUser', default_password_hash, array['profile:me:read']),
-			('admin', default_password_hash, array['profile:me:read', 'profile:delete']);
+			('commonUser', default_password_hash, array['profile:me:read'], '365d'),
+			('admin', default_password_hash, array['profile:me:read', 'profile:delete'], '365d');
 	
 END;
 $$ LANGUAGE plpgsql;

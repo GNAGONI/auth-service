@@ -13,6 +13,7 @@ const auth = async (req, res) => {
   if (!passwordUtil.compareHash(credentials, userTypeData.password_hash)) {
     throw dbQueryError('Invalid credentials');
   }
+
   const token = jwt.sign(
     {
       userEmail: req.session.userEmail,
@@ -20,7 +21,7 @@ const auth = async (req, res) => {
       scope: userTypeData.scope,
     },
     process.env.JWT_SECRET,
-    { expiresIn: process.env.JWT_EXPIRATION },
+    { expiresIn: userTypeData.ttl },
   );
   res.send({
     token,
