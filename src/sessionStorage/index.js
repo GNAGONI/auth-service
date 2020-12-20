@@ -20,8 +20,8 @@ const sessionStorage = session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: process.env.COOKIE_SECURE,
-    httpOnly: process.env.COOKIE_HTTP_ONLY,
+    secure: process.env.COOKIE_SECURE === 'true',
+    httpOnly: process.env.COOKIE_HTTP_ONLY === 'true',
     maxAge: Number(process.env.COOKIE_MAX_AGE),
   },
 });

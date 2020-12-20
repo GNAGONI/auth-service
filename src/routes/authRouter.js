@@ -1,6 +1,9 @@
 const express = require('express');
 const { header } = require('express-validator');
-const { validationMiddleware } = require('../middlewares');
+const {
+  validationMiddleware,
+  sessionCheckMiddleware,
+} = require('../middlewares');
 const { authController } = require('../controllers');
 
 const authRouter = express.Router();
@@ -13,6 +16,7 @@ authRouter.post(
       .withMessage('Invalid Basic'),
   ],
   validationMiddleware,
+  sessionCheckMiddleware,
   authController.auth,
 );
 
