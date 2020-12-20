@@ -1,8 +1,19 @@
 const express = require('express');
+const { header } = require('express-validator');
+const { validationMiddleware } = require('../middlewares');
 const { authController } = require('../controllers');
 
 const authRouter = express.Router();
 
-authRouter.post('/auth', authController.auth);
+authRouter.post(
+  '/auth',
+  [
+    header('basic')
+      .matches(/\S+\/\S+/, 'g')
+      .withMessage('Invalid Basic'),
+  ],
+  validationMiddleware,
+  authController.auth,
+);
 
 module.exports = authRouter;
