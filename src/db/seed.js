@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
+const { passwordUtil } = require('@microservices-inc/common');
 const { dbQuery } = require('./index');
-const { passwordUtil } = require('../utils');
 
 const seed = async () => {
   try {
