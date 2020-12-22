@@ -16,8 +16,8 @@ const auth = async (req, res) => {
 
   const token = jwt.sign(
     {
-      userEmail: req.session.userEmail,
-      userId: req.session.userId,
+      email: req.session.userEmail,
+      id: req.session.userId,
       scope: userTypeData.scope,
     },
     process.env.JWT_SECRET,
