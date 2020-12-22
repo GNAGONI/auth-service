@@ -2,23 +2,22 @@ require('express-async-errors');
 const express = require('express');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
-const { authRouter, userRouter } = require('./src/routes');
+const { authRouter } = require('./src/routes');
 const { errorMiddleware } = require('./src/middlewares');
-const { dbConnect } = require('./src/db');
+const { sessionStorage } = require('./src/sessionStorage');
+
+dotenv.config();
 
 const app = express();
-dotenv.config();
+app.use(sessionStorage);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use('/', authRouter);
-app.use('/user', userRouter);
 app.use((req, res) => {
   res.status(404).send('Not Found');
 });
 app.use(errorMiddleware);
 
-dbConnect(() => {
-  app.listen(process.env.AUTH_SERVICE_PORT, () => {
-    console.log(`Server is running on port ${process.env.AUTH_SERVICE_PORT}`);
-  });
+app.listen(process.env.AUTH_SERVICE_PORT, () => {
+  console.log(`Server is running on port ${process.env.AUTH_SERVICE_PORT}`);
 });
