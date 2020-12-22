@@ -2,8 +2,8 @@ require('express-async-errors');
 const express = require('express');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
+const { errorMiddleware } = require('@microservices-inc/common');
 const { authRouter } = require('./src/routes');
-const { errorMiddleware } = require('./src/middlewares');
 const { sessionStorage } = require('./src/sessionStorage');
 
 dotenv.config();

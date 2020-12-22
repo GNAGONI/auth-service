@@ -3,7 +3,7 @@ const { header } = require('express-validator');
 const {
   validationMiddleware,
   sessionCheckMiddleware,
-} = require('../middlewares');
+} = require('@microservices-inc/common');
 const { authController } = require('../controllers');
 
 const authRouter = express.Router();
