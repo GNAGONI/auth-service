@@ -15,8 +15,30 @@ BEGIN
 
 		INSERT INTO user_types(name, password_hash, scope, ttl)
 		VALUES
-			('commonUser', default_password_hash, array['profile:me:read'], '365d'),
-			('admin', default_password_hash, array['profile:me:read', 'profile:delete'], '365d');
+			(
+				'commonUser',
+				default_password_hash,
+				array[
+					'profile:me:read',
+					'inventory:me:read',
+					'inventory:consume'
+				],
+				'365d'
+			),
+			(
+				'admin',
+				default_password_hash,
+				array[
+					'profile:me:read',
+					'profile:delete',
+					'profile:read',
+				  'inventory:me:read',
+					'inventory:consume',
+					'inventory:read',
+					'inventory:grant'
+				],
+				'365d'
+			);
 	
 END;
 $$ LANGUAGE plpgsql;
