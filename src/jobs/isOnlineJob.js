@@ -1,6 +1,6 @@
 const cron = require('node-cron');
+const { EventBusPublisher } = require('@microservices-inc/common');
 const { getAllSessions } = require('../sessionStorage');
-const { EventBusPublisher } = require('../eventBus');
 
 const isOnlineJob = () => {
   cron.schedule(process.env.IS_ONLINE_JOB_SCHEDULE, async () => {
