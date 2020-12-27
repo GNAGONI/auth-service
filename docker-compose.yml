@@ -12,6 +12,7 @@ services:
     depends_on:
       - db
       - redis
+      - rabbitmq
   db:
     image: postgres:12.4
     environment:
@@ -34,12 +35,36 @@ services:
       - 'pgadmin-data:/var/lib/pgadmin'
     depends_on:
       - db
-
+  rabbitmq:
+    image: rabbitmq:3-management
+    environment:
+      RABBITMQ_ERLANG_COOKIE: ${RABBITMQ_ERLANG_COOKIE}
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+    volumes:
+      - 'rbmq-data:/var/lib/rabbitmq'
+    ports:
+      - '${RABBITMQ_UI_PORT}:15672'
+      - '${RABBITMQ_PORT}:5672'
+    depends_on:
+      - redis
   redis:
     image: 'redis:alpine'
     ports:
       - '${REDIS_PORT}:6379'
+  redis-commander:
+    container_name: redis-commander
+    hostname: redis-commander
+    image: rediscommander/redis-commander:latest
+    restart: always
+    environment:
+      REDIS_HOSTS: ${REDIS_URI}
+    ports:
+      - '${REDIS_COMMANDER_PORT}:8081'
+    depends_on:
+      - redis
 
 volumes:
   db-data:
   pgadmin-data:
+  rbmq-data:
