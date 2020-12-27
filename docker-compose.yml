@@ -34,7 +34,17 @@ services:
       - 'pgadmin-data:/var/lib/pgadmin'
     depends_on:
       - db
-
+  rabbitmq:
+    image: rabbitmq:3-management
+    environment:
+      RABBITMQ_ERLANG_COOKIE: ${RABBITMQ_ERLANG_COOKIE}
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+    volumes:
+      - 'rbmq-data:/var/lib/rabbitmq'
+    ports:
+      - '${RABBITMQ_UI_PORT}:15672'
+      - '${RABBITMQ_PORT}:5672'
   redis:
     image: 'redis:alpine'
     ports:
@@ -43,3 +53,4 @@ services:
 volumes:
   db-data:
   pgadmin-data:
+  rbmq-data:

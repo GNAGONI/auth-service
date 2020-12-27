@@ -1,10 +1,11 @@
 const amqp = require('amqplib');
 
 class EventBus {
-  constructor(queue) {
+  constructor(brokerUrl, queue) {
     this.channel = null;
     this.connection = null;
     this.queue = queue;
+    this.brokerUrl = brokerUrl;
   }
 
   async init() {
@@ -15,7 +16,7 @@ class EventBus {
 
   createConnection() {
     return amqp
-      .connect('amqp://admin:secret@localhost')
+      .connect(this.brokerUrl)
       .then(connection => {
         this.connection = connection;
       })
