@@ -1,5 +1,4 @@
 const cron = require('node-cron');
-// const { EventBusPublisher } = require('@microservices-inc/common');
 const { eventBus } = require('@microservices-inc/common');
 const { getAllSessions } = require('../sessionStorage');
 
