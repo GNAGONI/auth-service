@@ -14,6 +14,7 @@ const isOnlineJob = () => {
             publisher.publish({
               userEmail,
               userId,
+              isOnline: true,
             });
           }
         } catch (e) {
