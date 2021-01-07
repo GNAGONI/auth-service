@@ -6,23 +6,22 @@ const isOnlineJob = () => {
   cron.schedule(process.env.IS_ONLINE_JOB_SCHEDULE, async () => {
     try {
       const sessions = await getAllSessions();
-      const publisher = eventBus.getPublisher('isOnline');
       sessions.forEach(session => {
         try {
-          const { userEmail, userId } = JSON.parse(session);
-          if (userEmail && userId) {
-            publisher.publish({
+          const { userEmail, userId, authenticated } = JSON.parse(session);
+          if (userEmail && userId && authenticated) {
+            eventBus.publish('isOnline', {
               userEmail,
               userId,
               isOnline: true,
             });
           }
         } catch (e) {
-          console.error('Invalid session: ', e);
+          console.error(`Invalid session. ${e}`);
         }
       });
     } catch (e) {
-      console.error('Unexpected error: ', e);
+      console.error(`Unexpected error. ${e}`);
     }
   });
 };
