@@ -22,6 +22,7 @@ const auth = async (req, res) => {
     process.env.JWT_SECRET,
     { expiresIn: userTypeData.ttl },
   );
+  req.session.authenticated = true;
   res.send({
     token,
   });
