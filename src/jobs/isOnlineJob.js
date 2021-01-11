@@ -8,9 +8,12 @@ const isOnlineJob = () => {
       const sessions = await getAllSessions();
       sessions.forEach(session => {
         try {
-          const { userEmail, userId, authenticated } = JSON.parse(session);
-          if (userEmail && userId && authenticated) {
+          const { userEmail, userId, authenticated, sessionId } = JSON.parse(
+            session,
+          );
+          if (userEmail && userId && authenticated && sessionId) {
             eventBus.publish('isOnline', {
+              sessionId,
               userEmail,
               userId,
               isOnline: true,
